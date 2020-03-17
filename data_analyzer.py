@@ -1,12 +1,3 @@
-#-------------------------------------------------------------------------------
-# Name:        data_analyzer
-#
-# Author:      Kamil Reder
-#
-# Created:     18-11-2019
-# Licence:     Freeware
-#-------------------------------------------------------------------------------
-
 '''
     The data_analyzer is an application which allows to make
     simple analyses of data saved as .csv file.
