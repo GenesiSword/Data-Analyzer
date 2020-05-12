@@ -1,4 +1,4 @@
-'''
+"""
     The data_analyzer is an application which allows to make
     simple analyses of data saved as .csv file.
 
@@ -9,7 +9,7 @@
     4) Load new data.
     5) Save your data
     6) Close the program.
-'''
+"""
 
 import logging
 import os
@@ -20,17 +20,15 @@ from sklearn.preprocessing import StandardScaler
 
 sns.set_style('white')
 
-#logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
-logging.disable(logging.CRITICAL)
 
 def ask_for_int(demand, number=None):
-    '''
+    """
     Is used to check whether the entered data
     is a number.
     Arguments:
     demand: question asked to the user.
     number: entered number.
-    '''
+    """
     while True:
         try:
             number = int(input(demand))
@@ -39,14 +37,15 @@ def ask_for_int(demand, number=None):
         else:
             return number
 
+
 def ask_for_path(demandpath, path=None):
-    '''
+    """
     Is used to check whether the entered path
     for file is correct.
     Arguments:
     demandpath: question asked to the user.
     path: entered path.
-    '''
+    """
     while True:
         try:
             path = str(input(demandpath))
@@ -56,14 +55,15 @@ def ask_for_path(demandpath, path=None):
         else:
             return path
 
+
 def ask_for_col(demandcol, col=None):
-    '''
+    """
     Is used to check whether the entered variable name
     is in dataframe.
     Arguments:
     demandcol: question asked to the user.
     col: entered variable name.
-    '''
+    """
     while True:
         try:
             col = str(input(demandcol))
@@ -74,46 +74,48 @@ def ask_for_col(demandcol, col=None):
         else:
             return col
 
+
 def yes_no(demandec, answer=None):
-    '''
+    """
     Is used to check whether the entered answer
     is "Yes" or "No".
     Arguments:
     demandpath: question asked to the user.
     answer: entered answer.
-    '''
+    """
     while True:
         try:
             answer = str(input(demandec))
             if answer.upper() != 'YES' and answer.upper() != 'NO':
-                raise IOError('''Answer "Yes" or "No": ''')
+                raise IOError("""Answer "Yes" or "No": """)
         except IOError as err:
             print(str(err))
         else:
             return answer.upper()
 
-class Analyze():
-    '''
+
+class Analyze:
+    """
     This class allows to:
     - Save your data.
     - Load your data.
     - Create dummy variables.
     - Perform scaling.
     - Manage outliers.
-    '''
+    """
     def __init__(self, datafr=None):
 
         self.datafr = datafr
 
     def save(self, locs=None, datanames=None, separators=None):
-        '''
+        """
         Saving your data as .csv file after specifying the following
         arguments:
         locs: localization where your data will be saved
         datanames: given name of saved DataFrame. Adds .csv extension
         automatically.
         separators: separator of your DataFrame.
-        '''
+        """
         locs = ask_for_path('Give the path where you want' \
                             'to save your CSV file. ')
         os.chdir(locs)
@@ -123,13 +125,13 @@ class Analyze():
         print('\nYour data has been saved.')
 
     def load(self, locl=None, datanamel=None, separatorl=None):
-        '''
+        """
         Loading your .csv file after specifying the following arguments:
         locl: localization of folder with your data.
         datanamel: name of your DataFrame. Adds .csv extension
         automatically.
         separatorl: separator of your DataFrame.
-        '''
+        """
         locl = ask_for_path('Give the path for your CSV file. ')
         os.chdir(locl)
         separatorl = str(input('Give the separator of your data. '))
@@ -149,13 +151,13 @@ class Analyze():
         print('\nYour data has been loaded.')
 
     def dummies(self, numdum=None, listdum=None):
-        '''
+        """
         Creating  dummy variable for indicated variables.
         Arguments:
         numdum: number of variables which you want to transform
         into dummy variables.
         listdum: list of variables which will be transformed into dummy variables.
-        '''
+        """
         listdum = []
         numdum = ask_for_int('How many categorical variables '\
                              'your dataset has? ')
@@ -175,10 +177,10 @@ class Analyze():
                   numsc=None,
                   listsc=None,
                   scfeatdf=None):
-        '''
+        """
         Allowing to perform standard scaling for indicated variables.
         For more details see "StandardScaler()".
-        '''
+        """
         listsc = []
         numsc = ask_for_int('How many variables you want to scale? ')
         for dummy_scalvar in range(0, numsc):
@@ -200,7 +202,7 @@ class Analyze():
                  lowqua=None,
                  upqua=None,
                  outdec=None):
-        '''
+        """
         Managing outliers. It allows to see outliers for indicated
         variables and decide whether user want to delete them or not.
         Arguments:
@@ -209,7 +211,7 @@ class Analyze():
         varout, lowqua, upqua: arguments used for outliers detecting.
         outdec: decide whether outliers will be deletd or not.
         "Yes" for delete, "No" for not deleting.
-        '''
+        """
         listout = []
         numout = ask_for_int('How many variables'\
                              ' you want to check for outliers? ')
@@ -224,7 +226,7 @@ class Analyze():
                                              varout.quantile(.25))*1.5
             upqua = varout.quantile(.75) + (varout.quantile(.75) -
                                             varout.quantile(.25))*1.5
-            print('''Variable "{}" has the following outliers: '''.format(outvar))
+            print("""Variable "{}" has the following outliers: """.format(outvar))
             print('\n')
             print(self.datafr[(varout < lowqua) | (varout > upqua)])
             print('\n')
@@ -241,8 +243,9 @@ class Analyze():
 
                 pass
 
-class Visual():
-    '''
+
+class Visual:
+    """
     Making following visualisations for loaded dataset.
     Can be performed the following visualisations:
     1) Regression
@@ -254,15 +257,15 @@ class Visual():
     7) Jointplot
     8) Pairplot
     9) Exit this section
-    '''
+    """
     def __init__(self, datatovis):
 
         self.datatovis = datatovis
 
     def regression(self, xdata=None, ydata=None):
-        '''
+        """
         See "lmplot" for seaborn.
-        '''
+        """
         xdata = ask_for_col('Give the name of variable for X axis. ')
         ydata = ask_for_col('Give the name of variable for Y axis. ')
         sns.lmplot(x=xdata, y=ydata, data=self.datatovis)
@@ -271,18 +274,18 @@ class Visual():
         print('\n The plot has been created.')
 
     def heatmap(self):
-        '''
+        """
         See "heatmap" for seaborn.
-        '''
+        """
         sns.heatmap(data=self.datatovis, cmap='coolwarm')
         plt.show()
 
         print('\n The plot has been created.')
 
     def barplot(self, xdata=None, ydata=None):
-        '''
+        """
         See "barplot" for seaborn.
-        '''
+        """
         xdata = ask_for_col('Give the name of variable for X axis. ')
         ydata = ask_for_col('Give the name of variable for Y axis. ')
         sns.barplot(x=xdata, y=ydata, data=self.datatovis)
@@ -291,9 +294,9 @@ class Visual():
         print('\n The plot has been created.')
 
     def countplot(self, xdata=None):
-        '''
+        """
         See "countplot" for seaborn.
-        '''
+        """
         xdata = ask_for_col('Give the name of variable'\
                             ' which you want to count and plot. ')
         sns.countplot(x=xdata, data=self.datatovis)
@@ -302,9 +305,9 @@ class Visual():
         print('\n The plot has been created.')
 
     def boxplot(self, xdata=None, ydata=None):
-        '''
+        """
         See "boxplot" for seaborn.
-        '''
+        """
         xdata = ask_for_col('Give the name of variable to categorize data. ')
         ydata = ask_for_col('Give the name of variable for Y axis. ')
         sns.boxplot(x=xdata, y=ydata, data=self.datatovis)
@@ -313,9 +316,9 @@ class Visual():
         print('\n The plot has been created.')
 
     def distribution(self, xdata=None):
-        '''
+        """
         See "distribution" for seaborn.
-        '''
+        """
         xdata = ask_for_col('Give the name of variable to plot. ')
         sns.distplot(self.datatovis[xdata])
         plt.show()
@@ -323,9 +326,9 @@ class Visual():
         print('\n The plot has been created.')
 
     def jointplot(self, xdata=None, ydata=None):
-        '''
+        """
         See "jointplot" for seaborn.
-        '''
+        """
         xdata = ask_for_col('Give the name of the first variable. ')
         ydata = ask_for_col('Give the name of the second variable. ')
         sns.jointplot(x=xdata, y=ydata, data=self.datatovis)
@@ -334,22 +337,23 @@ class Visual():
         print('\n The plot has been created.')
 
     def pairplot(self):
-        '''
+        """
         See "pairplot" for seaborn.
-        '''
+        """
         sns.pairplot(data=self.datatovis)
         plt.show()
 
         print('\n The plot has been created.')
 
+
 if __name__ == "__main__":
 
     print(
-        '''
+        """
         Welcome!
 
         Load your data to analyze!
-        ''')
+        """)
 
     ALPHA = Analyze()
     ALPHA.load()
@@ -358,7 +362,7 @@ if __name__ == "__main__":
     while True:
 
         print(
-            '''
+            """
             Now you can choose one of these ACTIONs entering the numer before ")".
 
             1) See your data details.
@@ -368,41 +372,40 @@ if __name__ == "__main__":
             5) Save your data
             6) Close the program.
 
-            ''')
+            """)
 
         ACTION = ask_for_int('What do you want to do? ')
 
         if ACTION == 1:
 
-            print('\n')
-            print('This is head of your data:')
-            print('\n')
-            print(ALPHA.datafr.head())
-            print('\n')
-            print('Information about your data: ')
-            print('\n')
-            print(ALPHA.datafr.info())
-            print('\n')
-            print('Descriptive statistics: ')
-            print('\n')
-            print(ALPHA.datafr.describe())
-            print('\n')
-            print('Correlation matrix: ')
-            print('\n')
-            print(ALPHA.datafr.corr())
+            print(
+        """
+        This is head of your data:
+        {}
+        
+        Descriptive statistics:
+        
+        {}
+        
+        Correlation matrix:
+        
+        {}
+        """.format(ALPHA.datafr.head(),
+                   ALPHA.datafr.describe(),
+                   ALPHA.datafr.corr()))
 
         elif ACTION == 2:
 
             while True:
 
-                print('''
+                print("""
                         You can now perform one of these ACTIONs:
                         1) Create dummy variables.
                         2) Standarize your data.
                         3) Manage outliers.
                         4) Manage NA values.
                         5) Exit this section.
-                        ''')
+                        """)
 
                 ACTIONPREP = ask_for_int('What do you want to do? ')
 
@@ -420,8 +423,8 @@ if __name__ == "__main__":
 
                 elif ACTIONPREP == 4:
 
-                    print('''You can see your NA values'''\
-                          '''in plot below (marked as "1")''')
+                    print("""You can see your NA values"""\
+                          """in plot below (marked as "1")""")
                     sns.heatmap(ALPHA.datafr.isna(),
                                 cmap='coolwarm',
                                 linewidths=.2)
@@ -453,7 +456,7 @@ if __name__ == "__main__":
             while True:
 
                 print(
-                    '''
+                    """
 
                     This section of program allows you to make visualisations.
                     To execute specific visualisation enter the numer before ")".
@@ -469,7 +472,7 @@ if __name__ == "__main__":
                     8) Pairplot
                     9) Exit this section.
 
-                    ''')
+                    """)
 
                 CHVISUAL = ask_for_int('Which visualisation'\
                                        'you want to make? ')
