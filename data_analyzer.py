@@ -11,7 +11,6 @@
     6) Close the program.
 """
 
-import logging
 import os
 import pandas as pd
 import seaborn as sns
